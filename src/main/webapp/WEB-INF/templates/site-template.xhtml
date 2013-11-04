@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2013, Rogue.IO
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <f:facet name="first">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+        <title><ui:insert name="page.title">Starter Template</ui:insert></title>
+    </f:facet>
+    <f:facet name="last">
+        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+        <h:outputStylesheet library="bootstrap" name="css/bootstrap-theme.min.css"/>
+        <f:verbatim>
+            <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+            <!--[if lt IE 9]>
+              <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+        </f:verbatim>
+    </f:facet>
+</h:head>
+
+<h:body>
+    <h:form id="__rootForm">
+
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Starter Template</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">Home</a></li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+        <div class="container" style="padding:60px 0; min-height: 600px">
+            <ui:insert name="page.content">
+                Page content goes here.
+            </ui:insert>
+        </div>
+        <div class="container" style="text-align: center;">
+            <hr/>
+            Template by <a href="http://getbootstrap.com">Bootstrap</a>
+        </div>
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <h:outputScript library="jquery" name="js/jquery.js" target="head"/>
+        <h:outputScript library="bootstrap" name="js/bootstrap.min.js" target="head"/>
+    </h:form>
+</h:body>
+</html>
