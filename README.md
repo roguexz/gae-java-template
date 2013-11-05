@@ -6,7 +6,7 @@ A GAE/J project template for JSF based applications. This template uses Gradle f
 This template:
 
 + uses Bootstrap for its templating
-+ is based on JSF 2.2
++ is based on JSF 2.2, JPA 2, CDI , PrimeFaces
 + uses Gradle for building & running
 
 
