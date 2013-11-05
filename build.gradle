@@ -20,12 +20,12 @@ apply plugin: 'war'
 apply plugin: 'idea'
 
 ext {
-    gaeAppName = 'gae-java-gradle-template'
+    gaeAppName = 'gae-java-template'
     gaeAppVersion = '1'
 
     gaeArtifactName = 'appengine-java-sdk'
     gaeArtifactGroup = 'com.google.appengine'
-    gaeArtifactVersion = '1.8.4'
+    gaeArtifactVersion = '1.8.6'
 
     gaeSdkFldrPath = file(gaeArtifactName + File.separator + gaeArtifactName + '-' + gaeArtifactVersion).absolutePath
     gaeSdkFldr = file(ext.gaeSdkFldrPath)

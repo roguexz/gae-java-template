@@ -17,6 +17,7 @@
 /**
  * Common application wide settings that will be included in each of the sub projects.
  */
+import org.apache.tools.ant.taskdefs.condition.Os
 
 apply plugin: 'java'
 
@@ -89,7 +90,9 @@ task setupEnv(dependsOn: 'setup_GAE_SDK') << {
  * GAE/J related tasks.
  */
 
-// Ensures that the GAE SDK has been setup for the current project.
+/**
+ * Download and upack the GAE/J setup
+ */
 task setup_GAE_SDK << {
 
     // Download & Verify that the app engine has been specified.
@@ -125,7 +128,7 @@ task setup_GAE_SDK << {
         }
 
         // Verify that the folder was created. This acts a secondary check in the event of the packaging scheme of GAE/J
-        // changing
+        // changing.
         if (!gaeSdkFldr.exists()) {
             ant.fail("The GAE/J artifact packaging has changed. Could not find the sdk folder "
                              + gaeSdkFldr.absolutePath + " build script.")
@@ -133,8 +136,10 @@ task setup_GAE_SDK << {
     }
 }
 
-// Task to launch the dev_app_server
-task launchDevAppServer(dependsOn: build) << {
+/**
+ * Ensures that the war file has been exploded. This is required for both running as well as uploading the content.
+ */
+task explodeWar(dependsOn: build) << {
     File gaeWarDir = new File(file(buildDir), 'war_exploded');
     if (!gaeWarDir.exists()) {
         gaeWarDir.mkdir()
@@ -156,7 +161,13 @@ task launchDevAppServer(dependsOn: build) << {
             .from(zipTree(warFiles[0]))
             .into(gaeWarDir)
             .execute()
+}
 
+/**
+ * Start the dev app server
+ */
+task launchDevAppServer(dependsOn: explodeWar) << {
+    File gaeWarDir = new File(file(buildDir), 'war_exploded');
     task('launchGAEServer', type: JavaExec) {
         main = 'com.google.appengine.tools.KickStart'
         classpath = files(rootProject.ext.gaeSdkFldrPath + '/lib/appengine-tools-api.jar')
@@ -164,3 +175,20 @@ task launchDevAppServer(dependsOn: build) << {
     }
     .execute()
 }
+
+/**
+ * Uploads the application to AppEngine
+ *
+task uploadApp(dependsOn: explodeWar) << {
+    File gaeWarDir = new File(file(buildDir), 'war_exploded');
+    def gaeBinDir = rootProject.gaeSdkFldrPath + File.separator + 'bin' + File.separator;
+    def command = gaeBinDir + (Os.isFamily(Os.FAMILY_WINDOWS) ? 'appcfg.cmd' : 'appcfg.sh')
+
+    println 'Uploading the application to AppEngine'
+    task('updateApp', type: Exec) {
+        executable = command
+        args = ['update', gaeWarDir.absolutePath]
+    }
+    .execute()
+}
+*/

@@ -23,6 +23,7 @@
         <locale-config>
             <default-locale>en</default-locale>
         </locale-config>
+        <resource-handler>rogue.app.framework.view.faces.application.AppResourceHandler</resource-handler>
     </application>
     <lifecycle>
         <phase-listener>
