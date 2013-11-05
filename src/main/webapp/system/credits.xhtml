@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2013, Rogue.IO
   ~
@@ -18,11 +19,27 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="#{site.pageTemplate}">
     <ui:define name="page.title">
-        Home
+        Credits
     </ui:define>
 
     <ui:define name="page.content">
-        <h1>Introduction</h1>
-        A GAE/J project template for JSF based applications.
+        <div class="row">
+            <h1>Credits</h1>
+            This site is built using various open source tools &amp; libraries. I would like to take a moment
+            to list a few key projects without which this wouldn't have been possible
+            <p/>
+            <ul>
+                <li>
+                    <a href="http://getbootstrap.com">Bootstrap</a> - For the overall site template
+                </li>
+                <li>
+                    <a href="http://primefaces.org">PrimeFaces</a> - For times when plain JSF is not good enough
+                </li>
+                <li>
+                    <a href="https://developers.google.com/appengine/">Google App Engine</a> - The reason why this project exists!
+                </li>
+            </ul>
+        </div>
     </ui:define>
+
 </ui:composition>

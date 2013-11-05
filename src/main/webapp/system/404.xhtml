@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2013, Rogue.IO
   ~
@@ -14,15 +15,20 @@
   ~ limitations under the License.
   -->
 
+<!--
+    404 Page
+-->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="#{site.pageTemplate}">
     <ui:define name="page.title">
-        Home
+        Not Found
     </ui:define>
 
     <ui:define name="page.content">
-        <h1>Introduction</h1>
-        A GAE/J project template for JSF based applications.
+        <div class="row">
+            <h1>Page Not Found</h1>
+            We cannot find the page that you have requested for
+        </div>
     </ui:define>
 </ui:composition>

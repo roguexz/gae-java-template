@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2013, Rogue.IO
   ~
@@ -14,15 +15,8 @@
   ~ limitations under the License.
   -->
 
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="#{site.pageTemplate}">
-    <ui:define name="page.title">
-        Home
-    </ui:define>
-
-    <ui:define name="page.content">
-        <h1>Introduction</h1>
-        A GAE/J project template for JSF based applications.
-    </ui:define>
-</ui:composition>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd"
+       xmlns:weld="http://jboss.org/schema/weld/beans">
+</beans>

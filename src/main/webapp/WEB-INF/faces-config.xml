@@ -24,4 +24,9 @@
             <default-locale>en</default-locale>
         </locale-config>
     </application>
+    <lifecycle>
+        <phase-listener>
+            rogue.app.framework.support.appengine.faces.listener.SessionSerializationListener
+        </phase-listener>
+    </lifecycle>
 </faces-config>

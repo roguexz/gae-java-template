@@ -52,13 +52,38 @@
         <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
         <param-value>.xhtml</param-value>
     </context-param>
+    <listener>
+        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>FwkSupportFilter</filter-name>
+        <filter-class>rogue.app.framework.support.appengine.servlet.FrameworkSupportFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FwkSupportFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <display-name>SessionCleaner</display-name>
+        <servlet-name>SessionCleaner</servlet-name>
+        <servlet-class>rogue.app.framework.support.appengine.servlet.SessionCleaner</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+
+    <!-- Mappings for the system tasks -->
+    <!-- If you update the URLs here, then you will need to update them in the code as well -->
+    <servlet-mapping>
+        <servlet-name>SessionCleaner</servlet-name>
+        <url-pattern>/tasks/sessionCleaner</url-pattern>
     </servlet-mapping>
 
     <session-config>
@@ -69,6 +94,15 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/system/404.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/system/500.xhtml</location>
+    </error-page>
 
     <mime-mapping>
         <extension>ttf</extension>
@@ -86,4 +120,14 @@
         <extension>woff</extension>
         <mime-type>font/woff</mime-type>
     </mime-mapping>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>System Tasks</web-resource-name>
+            <url-pattern>/tasks/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 </web-app>

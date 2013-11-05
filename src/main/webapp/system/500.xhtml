@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2013, Rogue.IO
   ~
@@ -18,11 +19,14 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="#{site.pageTemplate}">
     <ui:define name="page.title">
-        Home
+        Error
     </ui:define>
 
     <ui:define name="page.content">
-        <h1>Introduction</h1>
-        A GAE/J project template for JSF based applications.
+        <div class="row">
+            <h1>Error</h1>
+            An error was encountered while completing your request. The site administrators have been notified.
+        </div>
     </ui:define>
+
 </ui:composition>
