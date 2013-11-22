@@ -34,6 +34,10 @@
         <param-value>Production</param-value>
         <!--param-value>Development</param-value-->
     </context-param>
+    <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
     <!-- Disable use of threading for single-threaded environments such as the Google AppEngine. -->
     <context-param>
         <description>
@@ -51,6 +55,10 @@
     <context-param>
         <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
         <param-value>.xhtml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>commons</param-value>
     </context-param>
     <listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
