@@ -21,11 +21,11 @@ apply plugin: 'idea'
 
 ext {
     gaeAppName = 'gae-java-template'
-    gaeAppVersion = '1'
+    gaeAppVersion = '2'
 
     gaeArtifactName = 'appengine-java-sdk'
     gaeArtifactGroup = 'com.google.appengine'
-    gaeArtifactVersion = '1.8.6'
+    gaeArtifactVersion = '1.8.8'
 
     gaeSdkFldrPath = file(gaeArtifactName + File.separator + gaeArtifactName + '-' + gaeArtifactVersion).absolutePath
     gaeSdkFldr = file(ext.gaeSdkFldrPath)
