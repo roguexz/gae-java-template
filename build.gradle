@@ -16,40 +16,134 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
+// Set the build directory to 'tmp'
+buildDir = file(rootDir.path + File.separator + 'tmp' + File.separator + rootProject.relativePath(projectDir))
+
+// Load the GAE-Gradle plugin
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.8.+'
+    }
+}
+
 apply plugin: 'war'
-apply plugin: 'idea'
+apply plugin: 'appengine'
+
+// The general repositories used in the project
+repositories {
+
+    flatDir {
+        dirs new File(rootDir, 'lib')
+    }
+
+    mavenCentral();
+
+    // The java.net repository for fetching the jsf binaries
+    maven {
+        url 'https://maven.java.net/content/repositories/releases/'
+    }
+
+    // The primefaces.org repository for fetching the primefaces jars
+    maven {
+        url 'http://repository.primefaces.org'
+    }
+}
+
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+configurations {
+    // The 'provided' configuration identifies jars that are already provided by the container
+    provided
+
+    // The 'jdo' configuration is used for setting up the DataNucleus enhancer
+    jdo {
+        extendsFrom compile
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            compileClasspath += configurations.provided
+        }
+    }
+}
 
 ext {
     gaeAppName = 'gae-java-template'
     gaeAppVersion = '2'
-
-    gaeArtifactName = 'appengine-java-sdk'
-    gaeArtifactGroup = 'com.google.appengine'
-    gaeArtifactVersion = '1.8.8'
-
-    gaeSdkFldrPath = file(gaeArtifactName + File.separator + gaeArtifactName + '-' + gaeArtifactVersion).absolutePath
-    gaeSdkFldr = file(ext.gaeSdkFldrPath)
-
-    // The property that tells the build system to enhance classes on the classpath.
-    enhanceClasses = true
 }
 
-apply from: rootProject.file('infra/common.gradle')
+// App Engine configuration
+appengine {
+    downloadSdk = true
+    httpPort = 8888
+    jvmFlags = ['-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9999']
+}
 
 war {
-    filter(ReplaceTokens, tokens: [TOKEN_APP_NAME: rootProject.ext.gaeAppName, TOKEN_APP_VERSION: rootProject.ext.gaeAppVersion])
+    filter(ReplaceTokens,
+           tokens: [TOKEN_APP_NAME: gaeAppName, TOKEN_APP_VERSION: gaeAppVersion])
 }
 
 dependencies {
-    compile 'org.glassfish:javax.faces:2.2.4'
+
+    // The app engine sdk dependency
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.8.9'
+
+    compile 'org.glassfish:javax.faces:2.2.5'
     compile 'org.glassfish.web:javax.el:2.2.5'
     compile 'commons-fileupload:commons-fileupload:1.3'
     compile 'org.primefaces:primefaces:4.0'
     compile 'org.jboss.weld.servlet:weld-servlet:2.0.3.Final'
-
-    // Provided by the container
-    provided fileTree(dir: rootProject.ext.gaeSdkFldrPath + '/lib/shared', include: "**/*.jar")
 }
 
-task run(dependsOn: 'launchDevAppServer') {
+// Define the classpath entries for the project
+task initClasspath {
+    doLast() {
+        String sdkRoot = System.properties['appengine.sdk.root']
+        if (sdkRoot == null) {
+            tasks['appengineDownloadSdk'].execute()
+            sdkRoot = System.properties['appengine.sdk.root']
+        }
+
+        if (sdkRoot != null) {
+            dependencies {
+                compile fileTree(dir: sdkRoot + '/lib/user/', include: '**/appengine-api-1.0-sdk*.jar')
+                compile fileTree(dir: sdkRoot + '/lib/opt/user', include: 'appengine-api-labs/v1/*.jar')
+                compile fileTree(dir: sdkRoot + '/lib/opt/user', include: 'jsr107/v1/*.jar')
+                compile fileTree(dir: sdkRoot + '/lib/opt/user', include: 'datanucleus/v2/*.jar')
+
+                // Provided by the container
+                provided fileTree(dir: sdkRoot + '/lib/shared', include: "**/*.jar")
+
+                // Jar containing the DataNucleus enhancer
+                jdo fileTree(dir: sdkRoot + '/lib/opt/tools/datanucleus/v2', include: 'datanucleus-enhancer*.jar')
+            }
+        }
+    }
 }
+
+tasks['compileJava'].dependsOn('initClasspath')
+tasks['compileTestJava'].dependsOn('initClasspath')
+
+task enhanceClasses(type: JavaExec) {
+    def classesDir = sourceSets.main.output.classesDir.canonicalPath.toURI().toString()
+    def allClasses = fileTree(dir: sourceSets.main.output.classesDir, include: '**/*.class').findAll()
+    main = 'org.datanucleus.enhancer.DataNucleusEnhancer'
+    classpath = files(project.configurations.jdo, project.configurations.provided, classesDir)
+    args = ['-api', 'JPA', '-v', '-d', classesDir] + allClasses
+}
+
+enhanceClasses.mustRunAfter classes
+war.dependsOn('enhanceClasses')
+
+task run(description: 'Run the application', dependsOn: 'appengineRun') {
+}
+
