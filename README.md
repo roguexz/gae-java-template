@@ -17,21 +17,17 @@ Getting Started
 ---------------
 
     1. Clone the repository locally
-    2. $> gradle setupEnv
-          This will download and setup the AppEngine environment in your local machine
 
-       $> gradle run
-          This will build and run the project. You can access the application @ http://localhost:8888/
+    2. $> gradle run
+          This will download & setup the AppEngine environment in your local machine
+          Next, it will build and run the project. You can access the application @ http://localhost:8888/
 
     3. Have a look at the build.gradle file. This contains all the key attributes of the project like
        the name and version details. It also contains details on what version of the AppEngine should
        be used, etc.
 
-    4. Under the infra/ folder you will find the scripts that provide the actual integration with GAE/J
-
-    5. $> gradle uploadApp
-          This will upload the application to AppEngine.
-          Do not forget to update the app name before firing this command
+    4. The project uses the <a href='https://github.com/GoogleCloudPlatform/gradle-appengine-plugin'>GAE Gradle Plugin</a>
+       for the various GAE operations.
 
 
 Here is an actual instance <a href='http://gae-java-template.appspot.com/'>deployed on AppEngine</a>.
