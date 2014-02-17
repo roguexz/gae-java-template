@@ -26,8 +26,8 @@ Getting Started
        the name and version details. It also contains details on what version of the AppEngine should
        be used, etc.
 
-    4. The project uses the <a href='https://github.com/GoogleCloudPlatform/gradle-appengine-plugin'>GAE Gradle Plugin</a>
-       for the various GAE operations.
-
 
 Here is an actual instance <a href='http://gae-java-template.appspot.com/'>deployed on AppEngine</a>.
+
+The project uses the <a href='https://github.com/GoogleCloudPlatform/gradle-appengine-plugin'>GAE Gradle Plugin</a>
+for the various GAE operations.
